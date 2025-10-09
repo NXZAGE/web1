@@ -1,0 +1,10 @@
+@import "colors";
+
+$container-border-color: $font-color;
+
+#canvas_container {
+  width: 420px;
+  height: 420px;
+  border: 1px solid $container-border-color;
+  margin: 20px auto;
+}
