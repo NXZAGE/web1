@@ -1,5 +1,7 @@
 package com.itmo.nxzage;
 
+import java.time.Instant;
+
 import com.fastcgi.FCGIInterface;
 import com.itmo.nxzage.communication.Request;
 import com.itmo.nxzage.communication.RequestParser;
@@ -20,6 +22,7 @@ public final class Server {
     private final RequestParser parser;
     private final PointInRegionService figureService;
     private final Validator<Request> requestValidator;
+    private long requestAcceptedStamp;
     private boolean running;
 
     public Server() {
@@ -33,6 +36,7 @@ public final class Server {
     public void run() {
         running = true;
         while (running && fcgi.FCGIaccept() >= 0) {
+            requestAcceptedStamp = System.nanoTime();
             processRequst();
         }
     }
@@ -60,7 +64,9 @@ public final class Server {
                 log.error(e.getMessage());
                 return buildErrorResposne(Status.INTERNAL_SERVER_ERROR);
             }
-            var body = "{\n  \"hit\": %b\n}".formatted(hit);
+            long executionTime = (System.nanoTime() - requestAcceptedStamp) / 1_000_000;
+            String timeStamp = Response.HTTP_DATE_FORMATTER.format(Instant.now());
+            var body = "{\n  \"hit\": %b,\n \"execution_time\": %d ms,\n  \"timestamp\": \n}".formatted(hit, executionTime, timeStamp);
             return Response.builder().body(body).status(Status.OK).build().header("Content-Type", "application/json");
         } else return buildErrorResposne(Status.METHOD_NOT_ALLOWED);
     }

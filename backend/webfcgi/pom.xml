@@ -34,6 +34,8 @@
       <groupId>com.fastcgi</groupId>
       <artifactId>fastcgi-lib</artifactId>
       <version>1.0.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/resources/libs/fastcgi-lib.jar</systemPath>
     </dependency>
 
     <!-- <dependency>

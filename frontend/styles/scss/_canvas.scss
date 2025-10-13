@@ -2,9 +2,11 @@
 
 $container-border-color: $font-color;
 
+
 #canvas_container {
-  width: 420px;
-  height: 420px;
+  width: $canvas-width;
+  height: $canvas-height;
   border: 1px solid $container-border-color;
-  margin: 20px auto;
+  margin-right: $main-lr-shift;
+  // margin: 20px auto;
 }

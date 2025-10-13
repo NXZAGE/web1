@@ -2,35 +2,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/css/main.css"> 
+    <link rel="stylesheet" href="styles/scss/main.css" />
     <title>LAB 1</title>
   </head>
   <body>
-    <header>
-      <span>Назайкин Егор Вгеньевич</span>
-      <br />
-      <span>Номер ИСУ: 466828</span>
-      <br />
-      <span>Вариант: 466828</span>
+    <header class="main-header">
+      <div class="logo item-group">
+        <div class="header-item" id="logo">
+          <h1>LAB1</h1>
+        </div>
+          <!-- <div class="header-item" id="task">Task: 466828</div> -->
+
+        
+      </div>
+      <div class="item-group">
+        <div class="header-item">Nazaikin Egor</div>
+        <div class="header-item">ISU: 466828</div>
+      </div>
     </header>
-    <div>
+    <div class="map">
       <div class="controls">
-        <label for="rInput">Параметр $r$ (2-10):</label>
-        <input
-          type="number"
-          id="rInput"
-          value="5"
-          min="1"
-          step="0.1"
-        /><br /><br />
+        <div class="control">
+          <label class="parameter-label" for="rInput">R parameter:</label>
+          <input
+            class="control-input"
+            type="number"
+            id="rInput"
+            value="5"
+            min="1"
+            step="0.1"
+          />
+        </div>
 
-        <label for="xInput">Координата $X$:</label>
-        <input type="number" id="xInput" value="1" step="0.1" /><br />
+        <div class="control">
+          <label class="parameter-label radio-container-label"
+            >X coordinate:</label
+          >
+          <div class="control-input" id="xRadioContainer">
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="-2" id="xRadio4neg" />
+              <label for="xRadio4neg">-2</label>
+            </div>
 
-        <label for="yInput">Координата $Y$:</label>
-        <input type="number" id="yInput" value="1" step="0.1" /><br /><br />
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="-1.5" id="xRadio3neg" />
+              <label for="xRadio3neg">-1.5</label>
+            </div>
 
-        <button onclick="drawVisualization()">Отрисовать</button>
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="-1" id="xRadio2neg" />
+              <label for="xRadio2neg">-1</label>
+            </div>
+
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="-0.5" id="xRadio1neg" />
+              <label for="xRadio1neg">-0.5</label>
+            </div>
+
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="0" id="xRadio0" />
+              <label for="xRadio0">0</label>
+            </div>
+
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="0.5" id="xRadio1pos" />
+              <label for="xRadio1pos">0.5</label>
+            </div>
+
+            <div class="radio-option">
+              <input
+                type="radio"
+                name="xRadio"
+                value="1"
+                id="xRadio2pos"
+                checked
+              />
+              <label for="xRadio2pos">1</label>
+            </div>
+
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="1.5" id="xRadio3pos" />
+              <label for="xRadio3pos">1.5</label>
+            </div>
+
+            <div class="radio-option">
+              <input type="radio" name="xRadio" value="2" id="xRadio4pos" />
+              <label for="xRadio4pos">2</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- <input type="number" id="xInput" value="1" step="0.1" /><br /> -->
+        <div class="control">
+          <label class="parameter-label" for="yInput">Y coordinate:</label>
+          <input
+            class="control-input"
+            type="number"
+            id="yInput"
+            value="1"
+            step="0.1"
+          />
+        </div>
+        <button class="control" id="submit-btn" onclick="drawVisualization()">
+          Check hit
+        </button>
       </div>
 
       <div id="canvas_container"></div>
@@ -38,5 +113,5 @@
   </body>
   <script src="https://unpkg.com/konva@9/konva.min.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/canvas.js"></script
+  <script src="js/canvas.js"></script>
 </html>

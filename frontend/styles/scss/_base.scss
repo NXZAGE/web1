@@ -1,7 +1,55 @@
 @import "colors";
+@import "vars";
+@import url("https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
 
 body {
   background-color: $foreground-color;
   color: $font-color;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Quantico", sans-serif;
+  font-weight: 700;
+  font-size: $default-font-size;
+}
+
+h1, h2, h3, h4, h5 {
+  font-size: inherit;
+}
+
+button,
+input {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.main-header {
+  background-color: $accent-color;
+  padding: 0.5rem $main-lr-shift;
+  color: $foreground-color;
+  display: flex;
+  width: calc(100% - $main-lr-shift - $main-lr-shift);
+  justify-content: space-between;
+
+  .logo.item-group {
+    display: flex;
+    flex-direction: raw;
+    width: 400px;
+    // vertical-align: middle;
+    #logo {
+      font-size: $default-font-size * 2;
+      height: min-content;
+
+      h1::after {
+          content: "T:466828";
+          font-size: $default-font-size * 0.7;
+          // font-weight: 400;
+          color: $accent-color-darked;
+          margin-left: 0.5rem;
+      }
+    }
+  }
 }

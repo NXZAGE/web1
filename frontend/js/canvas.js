@@ -1,7 +1,11 @@
-const WIDTH = 420;
-const HEIGHT = 420;
-const SCALE_BASIS = 200;
+const WIDTH = 520;
+const HEIGHT = 520;
+const SCALE_BASIS = 220;
 const CANVAS_CENTER = { x: WIDTH / 2, y: HEIGHT / 2 };
+const AXIS_COLOR = 'white';
+const AXIS_FONT_COLOR = 'white';
+const AREA_COLOR = 'rgba(224, 145, 250, 1)';
+const AREA_OPACITY = 0.9;
 let stage, layer, point;
 
 // Инициализация Konva Stage и Layer
@@ -31,20 +35,19 @@ function toCanvasCoords(x, y, r) {
 // Отрисовка осей и меток
 function drawAxes(r) {
     // Удаляем все старые элементы (оси, метки, область)
-    layer.destroyChildren(); 
 
     const scale = SCALE_BASIS / r; // Пикселей на единицу
 
     // --- Ось X ---
     layer.add(new Konva.Line({
         points: [0, CANVAS_CENTER.y, WIDTH, CANVAS_CENTER.y],
-        stroke: 'black',
+        stroke: AXIS_COLOR,
         strokeWidth: 1,
     }));
     // --- Ось Y ---
     layer.add(new Konva.Line({
         points: [CANVAS_CENTER.x, 0, CANVAS_CENTER.x, HEIGHT],
-        stroke: 'black',
+        stroke: AXIS_COLOR,
         strokeWidth: 1,
     }));
     
@@ -56,24 +59,24 @@ function drawAxes(r) {
         // Метка на X
         layer.add(new Konva.Text({
             x: CANVAS_CENTER.x + pix - 10, y: CANVAS_CENTER.y + 5,
-            text: val.toFixed(1), fontSize: 10, fill: 'gray'
+            text: val.toFixed(1), fontSize: 10, fill: AXIS_FONT_COLOR
         }));
         // Короткая черточка на X
         layer.add(new Konva.Line({
             points: [CANVAS_CENTER.x + pix, CANVAS_CENTER.y - 3, CANVAS_CENTER.x + pix, CANVAS_CENTER.y + 3],
-            stroke: 'black', strokeWidth: 1,
+            stroke: AXIS_COLOR, strokeWidth: 1,
         }));
         
         // Метка на Y (только для положительных, отрицательные загромождают)
         if (val !== 0) {
              layer.add(new Konva.Text({
                 x: CANVAS_CENTER.x + 5, y: CANVAS_CENTER.y - pix - 5,
-                text: val.toFixed(1), fontSize: 10, fill: 'gray'
+                text: val.toFixed(1), fontSize: 10, fill: AXIS_FONT_COLOR
             }));
             // Короткая черточка на Y
             layer.add(new Konva.Line({
                 points: [CANVAS_CENTER.x - 3, CANVAS_CENTER.y - pix, CANVAS_CENTER.x + 3, CANVAS_CENTER.y - pix],
-                stroke: 'black', strokeWidth: 1,
+                stroke: AXIS_COLOR, strokeWidth: 1,
             }));
         }
     });
@@ -91,8 +94,8 @@ function drawArea(r) {
         y: CANVAS_CENTER.y - r * scale, // Начинаем с верхнего левого угла
         width: (r / 2) * scale,
         height: r * scale,
-        fill: 'lightblue',
-        opacity: 0.6
+        fill: AREA_COLOR,
+        opacity: AREA_OPACITY
     });
     layer.add(rect);
 
@@ -103,8 +106,8 @@ function drawArea(r) {
         radius: (r / 2) * scale,
         angle: 90,
         rotation: 90, // Начинаем от оси X (0 градусов) и идём в III квадрант
-        fill: 'lightblue',
-        opacity: 0.6
+        fill: AREA_COLOR,
+        opacity: AREA_OPACITY
     });
     layer.add(quarterCircle);
 
@@ -135,9 +138,8 @@ function drawArea(r) {
             context.closePath();
             context.fillStrokeShape(shape);
         },
-        fill: 'lightblue',
-        opacity: 0.6,
-        stroke: 'blue',
+        fill: AREA_COLOR,
+        opacity: AREA_OPACITY,
         strokeWidth: 0 // Убираем границу для лучшего слияния с другими частями
     });
     layer.add(triangle);
@@ -242,19 +244,22 @@ function checkHit(x, y, r) {
 // Главная функция, вызываемая по кнопке
 function drawVisualization() {
     const r = parseFloat(document.getElementById('rInput').value);
-    const x = parseFloat(document.getElementById('xInput').value);
+    const x = parseFloat(document.querySelector('input[name=xRadio]:checked').value);
     const y = parseFloat(document.getElementById('yInput').value);
 
     if (isNaN(r) || isNaN(x) || isNaN(y)) {
         alert("Пожалуйста, введите корректные числа для r, x и y.");
         return;
     }
-    
+
+    layer.destroyChildren(); 
+
+    // 2. Отрисовка области
+    drawArea(r);
     // 1. Отрисовка осей и меток (удаляет старую область)
     drawAxes(r);
     
-    // 2. Отрисовка области
-    drawArea(r);
+    
     
     // 3. Отрисовка точки
     drawPoint(x, y, r);

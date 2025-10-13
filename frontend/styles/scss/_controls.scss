@@ -1,15 +1,64 @@
 @import "colors";
+@import "vars";
 
 .controls {
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  margin-bottom: 20px;
-  input {
-    width: 80px;
-    margin-right: 10px;
+  margin-left: $main-lr-shift;
+  width: $canvas-width;
+  .control {
+    justify-content: space-between;
+    display: flex;
+    flex-direction: raw;
+    // justify-content: ;
+    margin-bottom: 4%;
+    .control-input {
+      width: 50%;
+      font-weight: 400;
+    }
+
+    input.control-input {
+      border-radius: 0.2rem;
+      padding-left: 0.3rem;
+      background-color: $foreground-color-light;
+      border: none;
+      border-bottom: 2px solid $accent-color;
+      outline: none;
+      color: $font-color;
+    }
   }
-  label {
-    display: inline-block;
-    width: 100px;
-    text-align: right;
+
+  #xRadioContainer {
+    justify-content: flex-start;
+    text-align: start;
+
+    input.control-input {
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
+
+  #submit-btn {
+    display: block;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: 0;
+    background-color: $accent-color;
+    color: $foreground-color;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.map {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }

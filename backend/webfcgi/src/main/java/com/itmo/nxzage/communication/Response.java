@@ -18,7 +18,7 @@ import lombok.val;
 public final class Response {
     private static final String HTTP_VERSION = "HTTP/1.1";
     // TODO move to another class 
-    private static final DateTimeFormatter HTTP_DATE_FORMATTER = 
+    public static final DateTimeFormatter HTTP_DATE_FORMATTER = 
         DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
                         .withZone(ZoneId.of("GMT"));
     private final Map<String, String> headers = new HashMap<>();
