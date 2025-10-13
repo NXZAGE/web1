@@ -10,7 +10,6 @@ import com.itmo.nxzage.exceptions.response.ResponseValidationException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.val;
 
 @Builder
 @AllArgsConstructor
