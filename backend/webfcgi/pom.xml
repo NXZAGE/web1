@@ -147,6 +147,7 @@
           </descriptorRefs>
           <finalName>lab1</finalName>
           <appendAssemblyId>false</appendAssemblyId>
+          <includeSystemScope>true</includeSystemScope>
         </configuration>
         <executions>
           <execution>
