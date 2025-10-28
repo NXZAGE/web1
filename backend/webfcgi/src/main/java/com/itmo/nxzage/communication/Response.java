@@ -53,6 +53,10 @@ public final class Response {
         headers.put("Date", HTTP_DATE_FORMATTER.format(Instant.now()));
     }
 
+    private void setCors() {
+        headers.put("Access-Control-Allow-Origin", "*");
+    }
+
     private void checkIndispensableHeaders() {
         if (!headers.containsKey("Content-Type")) {
             throw new ResponseValidationException("Response should contain 'Content-Type' header");
@@ -72,7 +76,8 @@ public final class Response {
     public void send() {
         setDateHeader();
         setContentLengthHeader();
-        checkIndispensableHeaders();
+        setCors();
+        // checkIndispensableHeaders();
         internalSend();
     }
 

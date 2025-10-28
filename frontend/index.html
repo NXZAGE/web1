@@ -28,7 +28,7 @@
             class="control-input"
             type="number"
             id="rInput"
-            value="5"
+            value="3"
             min="1"
             step="0.1"
           />
@@ -103,15 +103,22 @@
             step="0.1"
           />
         </div>
-        <button class="control" id="submit-btn" onclick="drawVisualization()">
+        <!-- <button class="control" id="submit-btn" onclick="drawVisualization()">
+          Check hit
+        </button> -->
+        <button class="control" id="submit-btn">
           Check hit
         </button>
       </div>
 
       <div id="canvas_container"></div>
     </div>
+    <div id="log-table-container"></div>
   </body>
   <script src="https://unpkg.com/konva@9/konva.min.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/table_controller.js"></script>
+  <script src="js/controller.js"></script>
   <script src="js/canvas.js"></script>
+  <script src="js/main.js"></script>
 </html>

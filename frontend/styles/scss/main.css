@@ -12,7 +12,11 @@ body {
   font-size: 20px;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-size: inherit;
 }
 
@@ -48,12 +52,34 @@ input {
   margin-left: 0.5rem;
 }
 
+#log-table-container {
+  padding: 0;
+  margin: 0.5rem 10rem 0.5rem 10rem;
+  box-sizing: border-box;
+}
+#log-table-container .log-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+#log-table-container .log-table .log-tr .log-td {
+  text-align: left;
+  border-bottom: 1px solid rgb(224, 144, 255);
+  width: 20%;
+}
+#log-table-container .log-table .log-tr .log-td:nth-child(4) {
+  width: 40%;
+  text-align: right;
+}
+
 .controls {
   display: flex;
   flex-direction: column;
   text-align: center;
   margin-left: 10rem;
-  width: 520px;
+  width: 440px;
+  padding: 0rem 1rem 0rem 0rem;
 }
 .controls .control {
   justify-content: space-between;
@@ -102,8 +128,8 @@ input {
 }
 
 #canvas_container {
-  width: 520px;
-  height: 520px;
+  width: 440px;
+  height: 440px;
   border: 1px solid #FFF;
   margin-right: 10rem;
 }/*# sourceMappingURL=main.css.map */

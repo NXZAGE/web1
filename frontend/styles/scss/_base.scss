@@ -15,7 +15,11 @@ body {
   font-size: $default-font-size;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-size: inherit;
 }
 
@@ -44,11 +48,37 @@ input {
       height: min-content;
 
       h1::after {
-          content: "T:466828";
-          font-size: $default-font-size * 0.7;
-          // font-weight: 400;
-          color: $accent-color-darked;
-          margin-left: 0.5rem;
+        content: "T:466828";
+        font-size: $default-font-size * 0.7;
+        // font-weight: 400;
+        color: $accent-color-darked;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}
+
+#log-table-container {
+  padding: 0;
+  margin: 0.5rem $main-lr-shift 0.5rem $main-lr-shift;
+  box-sizing: border-box;
+
+  .log-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: auto;
+
+    .log-tr {
+      .log-td {
+        // padding: px px;
+        text-align: left;
+        border-bottom: 1px solid $accent-color;
+        width: 20%;
+        &:nth-child(4) {
+          width: 40%;
+          text-align: right;
+        }
       }
     }
   }

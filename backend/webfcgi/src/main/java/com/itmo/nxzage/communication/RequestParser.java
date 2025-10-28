@@ -23,12 +23,16 @@ public class RequestParser {
     static {
         SUPPORTED_METHODS.add("GET");
         SUPPORTED_METHODS.add("POST");
+        SUPPORTED_METHODS.add("OPTIONS");
         KEY_VAL_PAIR_PATTERN = Pattern.compile("^([a-zA-Z_]+)=((?:-)?\\d+(?:\\.\\d+)?)$");
     }
 
     public Request parse(FCGIRequest request) throws UnsupportedRequest {
         log.debug("Request parsing started...");
         String method = parseMethod(request);
+        if (method.equals("OPTIONS")) {
+            return new Request(new HashMap(), method);
+        }
         log.debug("Parsed methdod: %s".formatted(method));
         String content = null;
         try {

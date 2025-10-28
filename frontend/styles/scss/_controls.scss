@@ -7,6 +7,10 @@
   text-align: center;
   margin-left: $main-lr-shift;
   width: $canvas-width;
+  padding: 0rem 1rem 0rem 0rem;
+  // box-shadow: inset 0px 15px 15px -20px $accent-color;
+  // border: 1px solid red;
+  
   .control {
     justify-content: space-between;
     display: flex;

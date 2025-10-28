@@ -1,7 +1,8 @@
 package com.itmo.nxzage;
 
+import java.net.ResponseCache;
 import java.time.Instant;
-
+import java.time.format.DateTimeFormatter;
 import com.fastcgi.FCGIInterface;
 import com.itmo.nxzage.communication.Request;
 import com.itmo.nxzage.communication.RequestParser;
@@ -36,17 +37,23 @@ public final class Server {
     public void run() {
         running = true;
         while (running && fcgi.FCGIaccept() >= 0) {
+            log.debug("Ready to accept request");
             requestAcceptedStamp = System.nanoTime();
             processRequst();
         }
+        log.error("Server is not running: escaped from while");
     }
 
     public Response buildCorrectResponse(Request request) {
+        if (request.getMethod().equals("OPTIONS")) {
+            return buildOptionsResponse();
+        }
         try {
             requestValidator.validate(request);
         } catch (ValidationException e) {
             log.error("Validation exception :" + e.getMessage(), e);
-            return buildErrorResposne(Status.BAD_REQUEST, "Validation failed: %s".formatted(e.getMessage()));
+            return buildErrorResposne(Status.BAD_REQUEST,
+                    "Validation failed: %s".formatted(e.getMessage()));
         }
         if (request.getMethod().equals("POST")) {
             // TODO important add validation
@@ -60,40 +67,60 @@ public final class Server {
                 point = new Point(x, y);
                 hit = figureService.regionContainsPoint(point, r);
             } catch (Exception e) {
-                // TODO log error 
                 log.error(e.getMessage());
                 return buildErrorResposne(Status.INTERNAL_SERVER_ERROR);
             }
             long executionTime = (System.nanoTime() - requestAcceptedStamp) / 1_000_000;
-            String timeStamp = Response.HTTP_DATE_FORMATTER.format(Instant.now());
-            var body = "{\n  \"hit\": %b,\n \"execution_time\": %d ms,\n  \"timestamp\": \n}".formatted(hit, executionTime, timeStamp);
-            return Response.builder().body(body).status(Status.OK).build().header("Content-Type", "application/json");
-        } else return buildErrorResposne(Status.METHOD_NOT_ALLOWED);
+            String timeStamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+            var body =
+                    "{\n  \"hit\": %b,\n \"execution_time\": \"%d ms\",\n  \"timestamp\": \"%s\"\n}"
+                            .formatted(hit, executionTime, timeStamp);
+            return Response.builder().body(body).status(Status.OK).build().header("Content-Type",
+                    "application/json");
+        } else
+            return buildErrorResposne(Status.METHOD_NOT_ALLOWED);
+    }
+
+    public Response buildOptionsResponse() {
+        return Response.builder().status(Status.OK).build()
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Content-Type");
     }
 
     public Response buildErrorResposne(Status status) {
-        return Response.builder().status(status).body(status.getMessage()).build().header("Content-Type", "text/html");
+        return buildErrorResposne(status, status.getMessage());
     }
 
     public Response buildErrorResposne(Status status, String message) {
-        return Response.builder().status(status).body(message).build().header("Content-Type", "text/html");
+        String body =
+                "{\n  \"status\": \"%s\",\n  \"status_code\": %d,\n  \"error_message\": \"%s\"\n}".formatted(status.getMessage(), status.getCode(), message);
+        return Response.builder().status(status).body(body).build().header("Content-Type",
+                "application/json");
     }
 
     public void processRequst() {
+        log.debug("Commenced processing request");
         try {
             Request request = parser.parse(FCGIInterface.request);
+            log.debug("Request parsed");
             Response response = buildCorrectResponse(request);
+            log.debug("Expected response built");
             response.send();
+            log.debug("Response sent");
         } catch (Exception e) {
-            // TODO make realisation
+            log.error("Error duaring request processing", e);
             buildErrorResposne(Status.BAD_REQUEST, e.getMessage()).send();
-            // TODO log error
+            log.debug("Error response sent");
         }
     }
 
     private void initFigureService() {
-        figureService.addRegion((p, r) -> (p.y()>=0 && p.y()<=r && p.x()>=0 && p.x()<=r/2));
-        figureService.addRegion((p, r) -> (p.y()>=0 && p.y()<=r && p.x()<=0 && p.y()<p.x()*2+r));
-        figureService.addRegion((p, r) -> (p.x()<=0 && p.y()<=0 && p.x()*p.x()+p.y()*p.y()<=(r/2)*(r/2)));
+        figureService
+                .addRegion((p, r) -> (p.y() >= 0 && p.y() <= r && p.x() >= 0 && p.x() <= r / 2));
+        figureService.addRegion(
+                (p, r) -> (p.y() >= 0 && p.y() <= r && p.x() <= 0 && p.y() < p.x() * 2 + r));
+        figureService.addRegion((p, r) -> (p.x() <= 0 && p.y() <= 0
+                && p.x() * p.x() + p.y() * p.y() <= (r / 2) * (r / 2)));
     }
 }
